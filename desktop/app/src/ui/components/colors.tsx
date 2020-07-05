@@ -278,4 +278,5 @@ export const brandColors = {
   Messenger: '#0088FA',
   Instagram: '#E61E68',
   Flipper: '#8155cb',
+  'Karla Simulator': '#8B3765',
 };

@@ -9,8 +9,12 @@
 
 import path from 'path';
 import fs from 'fs-extra';
-import {Platform, Arch, ElectronDownloadOptions, build} from 'electron-builder';
-import {spawn} from 'promisify-child-process';
+import {
+  Platform,
+  Arch,
+  ElectronDownloadOptions,
+  build,
+} from 'electron-builder';
 import {
   buildFolder,
   compileRenderer,
@@ -21,16 +25,22 @@ import {
   generatePluginEntryPoints,
 } from './build-utils';
 import fetch from 'node-fetch';
-import {getIcons, buildLocalIconPath, getIconURL} from '../app/src/utils/icons';
+import {
+  getIcons,
+  buildLocalIconPath,
+  getIconURL,
+} from '../app/src/utils/icons';
 import isFB from './isFB';
 import copyPackageWithDependencies from './copy-package-with-dependencies';
-import {staticDir, distDir} from './paths';
+import { staticDir, distDir } from './paths';
 
 async function generateManifest(versionNumber: string) {
+  const appId = require('../package.json').build.appId;
+
   await fs.writeFile(
     path.join(distDir, 'manifest.json'),
     JSON.stringify({
-      package: 'com.facebook.sonar',
+      package: appId,
       version_name: versionNumber,
     }),
   );
@@ -66,23 +76,15 @@ async function buildDist(buildFolder: string) {
   const postBuildCallbacks: (() => void)[] = [];
 
   if (process.argv.indexOf('--mac') > -1) {
-    targetsRaw.push(Platform.MAC.createTarget(['dir']));
-    // You can build mac apps on Linux but can't build dmgs, so we separate those.
-    if (process.argv.indexOf('--mac-dmg') > -1) {
-      targetsRaw.push(Platform.MAC.createTarget(['dmg']));
-    }
-    postBuildCallbacks.push(() =>
-      spawn('zip', ['-qyr9', '../Flipper-mac.zip', 'Flipper.app'], {
-        cwd: path.join(distDir, 'mac'),
-        encoding: 'utf-8',
-      }),
-    );
+    // Modified from Facebook: we always build on macOS so need dmg and zip for Squirrel
+    targetsRaw.push(Platform.MAC.createTarget(['default']));
   }
   if (process.argv.indexOf('--linux') > -1) {
     targetsRaw.push(Platform.LINUX.createTarget(['zip']));
   }
   if (process.argv.indexOf('--win') > -1) {
-    targetsRaw.push(Platform.WINDOWS.createTarget(['zip']));
+    // Modified from Facebook: we always build an installer exe
+    targetsRaw.push(Platform.WINDOWS.createTarget(['nsis']));
   }
   if (!targetsRaw.length) {
     throw new Error('No targets specified. eg. --mac, --win, or --linux');
@@ -102,10 +104,7 @@ async function buildDist(buildFolder: string) {
 
   try {
     await build({
-      publish: 'never',
       config: {
-        appId: `com.facebook.sonar`,
-        productName: 'Flipper',
         directories: {
           buildResources: buildFolder,
           output: distDir,
@@ -113,7 +112,7 @@ async function buildDist(buildFolder: string) {
         electronDownload: electronDownloadOptions,
         npmRebuild: false,
         linux: {
-          executableName: 'flipper',
+          executableName: 'sonar',
         },
       },
       projectDir: buildFolder,
@@ -121,6 +120,7 @@ async function buildDist(buildFolder: string) {
     });
     return await Promise.all(postBuildCallbacks.map((p) => p()));
   } catch (err) {
+    console.error(err);
     return die(err);
   }
 }
@@ -141,14 +141,14 @@ function downloadIcons(buildFolder: string) {
   >((acc, [name, sizes]) => {
     acc.push(
       // get icons in @1x and @2x
-      ...sizes.map((size) => ({name, size, density: 1})),
-      ...sizes.map((size) => ({name, size, density: 2})),
+      ...sizes.map((size) => ({ name, size, density: 1 })),
+      ...sizes.map((size) => ({ name, size, density: 2 })),
     );
     return acc;
   }, []);
 
   return Promise.all(
-    iconURLs.map(({name, size, density}) => {
+    iconURLs.map(({ name, size, density }) => {
       const url = getIconURL(name, size, density);
       return fetch(url)
         .then((res) => {

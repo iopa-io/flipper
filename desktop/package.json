@@ -1,13 +1,14 @@
 {
-  "name": "flipper-project",
-  "version": "0.37.0",
+  "name": "sync-sonar",
+  "version": "0.37.1",
   "description": "Mobile development tool",
-  "productName": "Flipper",
-  "author": "Facebook Inc",
+  "author": "Synchronous Health, Inc.",
   "icon": "icon.png",
-  "category": "facebook-intern",
   "privileged": true,
   "private": true,
+  "browserslist": [
+    "last 1 electron version"
+  ],
   "workspaces": {
     "packages": [
       "app",
@@ -24,9 +25,9 @@
     ]
   },
   "build": {
-    "appId": "flipper",
-    "productName": "Flipper",
-    "artifactName": "Flipper-${os}.${ext}",
+    "appId": "ai.karla.SyncSONAR",
+    "productName": "SyncSONAR",
+    "afterSign": "/Volumes/DATA/projects/sonar-meta/flipper/desktop/scripts/notarize.js",
     "protocols": {
       "name": "flipper",
       "schemes": [
@@ -37,7 +38,24 @@
       "category": "public.app-category.developer-tools",
       "extendInfo": {
         "NSUserNotificationAlertStyle": "alert"
-      }
+      },
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "config/entitlements.mac.plist",
+      "entitlementsInherit": "config/entitlements.mac.plist",
+      "publish": [
+        {
+          "provider": "generic",
+          "url": "https://files.karla.ai/releases/${name}/${os}/"
+        },
+        {
+          "provider": "s3",
+          "bucket": "files.karla.ai",
+          "channel": "latest",
+          "acl": null,
+          "path": "/releases/${name}/${os}"
+        }
+      ]
     },
     "dmg": {
       "background": "dmgBackground.png",
@@ -61,20 +79,22 @@
       ]
     },
     "win": {
-      "publisherName": "Facebook, Inc.",
-      "sign": null
-    },
-    "asar": true,
-    "fileAssociations": [
-      {
-        "ext": [
-          ".flipper"
-        ],
-        "name": "Flipper Data",
-        "role": "Viewer",
-        "icon": "document-icons/document.icns"
-      }
-    ]
+      "publisherName": "Synchronous Health, Inc.",
+      "sign": null,
+      "publish": [
+        {
+          "provider": "generic",
+          "url": "https://files.karla.ai/releases/${name}/${os}/"
+        },
+        {
+          "provider": "s3",
+          "bucket": "files.karla.ai",
+          "channel": "latest",
+          "acl": null,
+          "path": "/releases/${name}/${os}"
+        }
+      ]
+    }
   },
   "resolutions": {
     "@jest-runner/electron/electron": "8.0.1",
@@ -156,8 +176,11 @@
     "@typescript-eslint/eslint-plugin": "^2.19.2",
     "@typescript-eslint/parser": "^2.19.2",
     "babel-eslint": "^10.0.1",
-    "electron": "8.0.1",
+    "electron": "8.2.5",
     "electron-builder": "^22.3.2",
+    "electron-updater": "^4.3.1",
+    "electron-notarize": "^0.3.0",
+    "env-cmd": "^10.1.0",
     "eslint": "^6.7.0",
     "eslint-config-fbjs": "^3.1.1",
     "eslint-config-prettier": "^6.10.1",
@@ -193,11 +216,12 @@
     "ts-jest": "^25.1.0",
     "ts-node": "^8.8.1",
     "typescript": "^3.7.2",
-    "yargs": "^15.3.1"
+    "yargs": "^15.3.1",
+    "flipper-ssdp": "^1.0.0"
   },
   "scripts": {
     "preinstall": "node scripts/prepare-watchman-config.js && yarn config set ignore-engines",
-    "postinstall": "patch-package && ./ts-node scripts/yarn-install-fb-plugins.ts && yarn build:pkg && ./ts-node scripts/generate-plugin-entry-points.ts",
+    "postinstall": "./ts-node scripts/yarn-install-fb-plugins.ts && yarn build:pkg && ./ts-node scripts/generate-plugin-entry-points.ts",
     "rm-dist": "rimraf ../dist",
     "rm-modules": "rimraf **/*/node_modules node_modules",
     "rm-temp": "rimraf $TMPDIR/jest* $TMPDIR/react-native-packager*",
@@ -229,7 +253,8 @@
     "lint": "yarn lint:eslint && yarn lint:flow && yarn lint:tsc",
     "bump-versions": "./ts-node scripts/bump-versions.ts",
     "publish-packages": "./ts-node scripts/publish-packages.ts",
-    "everything": "yarn reset && yarn install && yarn lint && yarn test && yarn test-electron && yarn build --mac --mac-dmg --win --linux && yarn build-headless --mac --linux && yarn start"
+    "release": "env-cmd -r ./config/.env-secrets.json -e production ./ts-node scripts/build-release.ts --mac --win",
+    "everything": "yarn reset && yarn install && yarn lint && yarn test && yarn test-electron && yarn build --mac --win --linux && yarn build-headless --mac --linux && yarn start"
   },
   "optionalDependencies": {
     "7zip-bin-mac": "^1.0.1"

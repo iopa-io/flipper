@@ -1,3 +1,7 @@
+# 0.37.0SS (22/4/2020)
+
+* Sync SONAR Customized Build
+
 # 0.37.0 (8/4/2020)
 
  * D20868923 -  Fix connections on Android devices with older SDKs (19)

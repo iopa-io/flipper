@@ -12,7 +12,8 @@
     12
   ],
   "arrow-right": [
-    12
+    12,
+    16
   ],
   "bell-null-outline": [
     24
@@ -128,7 +129,8 @@
     12
   ],
   "flash-default": [
-    12
+    12,
+    16
   ],
   "info-circle": [
     12,
@@ -136,9 +138,11 @@
     24
   ],
   "internet": [
-    12
+    12,
+    16
   ],
   "life-event-major": [
+    12,
     16
   ],
   "magic-wand": [
@@ -287,6 +291,7 @@
     16
   ],
   "fast-forward": [
+    12,
     16
   ],
   "draft-outline": [
@@ -394,9 +399,13 @@
     16
   ],
   "briefcase": [
+    12,
     16
   ],
   "business-briefcase": [
+    16
+  ],
+  "breaking-news": [
     16
   ]
 }

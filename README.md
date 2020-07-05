@@ -1,6 +1,15 @@
-# Flipper [![Build Status](https://travis-ci.org/facebook/flipper.svg?branch=master)](https://travis-ci.org/facebook/flipper) [![Android Maven Badge](https://img.shields.io/maven-metadata/v/https/jcenter.bintray.com/com/facebook/flipper/flipper/maven-metadata.xml.svg?color=green&label=android)](https://bintray.com/facebook/maven/com.facebook.flipper%3Aflipper) [![iOS](https://img.shields.io/cocoapods/v/FlipperKit.svg?label=iOS&color=blue)](https://cocoapods.org/pods/Flipper) [![Greenkeeper badge](https://badges.greenkeeper.io/facebook/flipper.svg)](https://greenkeeper.io/)
+# Sync SONAR
 
-Flipper (formerly Sonar) is a platform for debugging mobile apps on iOS and Android. Visualize, inspect, and control your apps from a simple desktop interface. Use Flipper as is or extend it using the plugin API.
+Changes from Facebook Engineering's Flipper:
+
+* Branding
+* Automatic updates from AWS S3
+* Support for desktop devices (e.g., not just those running on iOS and Android)
+* Automatic discovery between desktop and devices on same LAN based on SSDP standards
+* Updated release/packaging scripts to harden and notarize app for distribution and support in macOS Catalina and later
+* Removal of sample plugins and automatic inclusion of Sync SONAR plugins
+
+For the remainder of the documenation we still refer to this project as Flipper, since 99% of the code is unchanged.
 
 ![Flipper](/docs/assets/layout.png)
 

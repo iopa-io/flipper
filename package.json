@@ -1,0 +1,6 @@
+{
+    "name": "flipper-root",
+    "description": "Generic fork of Flipper for SyncSONAR flipper edition",
+    "repository": "github:iopa-io/flipper",
+    "private": true
+  }

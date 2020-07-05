@@ -13,10 +13,17 @@ import {Store} from '../reducers/index';
 import {Logger} from '../fb-interfaces/Logger';
 import Client from '../Client';
 import {UninitializedClient} from '../UninitializedClient';
+import sonarDiscovery from './sonarDiscovery';
 
 export default (store: Store, logger: Logger) => {
   const server = new Server(logger, store);
   server.init();
+
+  server.addListener('listening', (port: number) => {
+    if (port === store.getState().application.serverPorts.insecure) {
+      sonarDiscovery(store, logger);
+    }
+  });
 
   server.addListener('new-client', (client: Client) => {
     store.dispatch({

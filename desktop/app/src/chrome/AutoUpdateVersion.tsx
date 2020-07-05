@@ -1,5 +1,6 @@
+/* eslint-disable header/header */
 /**
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Synchronous Health, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -7,11 +8,13 @@
  * @format
  */
 
+ // MODIFIED FOR Sync SONAR to use electron-builder / electron-updater instead of builtin Electron
+
 import {FlexRow, colors, LoadingIndicator, Glyph, styled} from 'flipper';
 import {remote} from 'electron';
 import isProduction from '../utils/isProduction';
 import React, {Component} from 'react';
-import config from '../fb-stubs/config';
+const {autoUpdater} = remote.require('electron-updater');
 
 const Container = styled(FlexRow)({
   alignItems: 'center',
@@ -38,42 +41,38 @@ export default class AutoUpdateVersion extends Component<Props, State> {
 
   componentDidMount() {
     if (isProduction()) {
-      // this will fail, if the app is not code signed
-      try {
-        remote.autoUpdater.setFeedURL({
-          url: `${config.updateServer}?version=${this.props.version}`,
-        });
-      } catch (e) {
-        console.error(e);
-      }
-
-      remote.autoUpdater.on('update-downloaded', () => {
+      console.log('---> Checking for updates');
+      autoUpdater.on('update-downloaded', () => {
+        console.log('update-downloaded');
         this.setState({updater: 'update-downloaded'});
 
         const notification = new Notification('Update available', {
           body: 'Restart Flipper to update to the latest version.',
           requireInteraction: true,
         });
-        notification.onclick = remote.autoUpdater.quitAndInstall;
+        notification.onclick = autoUpdater.quitAndInstall;
       });
 
-      remote.autoUpdater.on('error', (error) => {
+      autoUpdater.on('error', (error: Error) => {
+        console.log('error', error);
         this.setState({updater: 'error', error: error.toString()});
       });
 
-      remote.autoUpdater.on('checking-for-update', () => {
+      autoUpdater.on('checking-for-update', () => {
         this.setState({updater: 'checking-for-update'});
       });
 
-      remote.autoUpdater.on('update-available', () => {
+      autoUpdater.on('update-available', () => {
+        console.log('update available');
         this.setState({updater: 'update-available'});
       });
 
-      remote.autoUpdater.on('update-not-available', () => {
+      autoUpdater.on('update-not-available', () => {
+        console.log('No update available');
         this.setState({updater: 'update-not-available'});
       });
 
-      remote.autoUpdater.checkForUpdates();
+      autoUpdater.checkForUpdates();
     }
   }
 
@@ -95,7 +94,7 @@ export default class AutoUpdateVersion extends Component<Props, State> {
             tabIndex={-1}
             role="button"
             title="Update available. Restart Flipper."
-            onClick={remote.autoUpdater.quitAndInstall}>
+            onClick={autoUpdater.quitAndInstall}>
             <Glyph color={colors.light30} name="breaking-news" />
           </span>
         )}

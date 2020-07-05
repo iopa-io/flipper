@@ -78,7 +78,7 @@ async function compile(
       resolver: {
         resolverMainFields: ['flipper:source', 'module', 'main'],
         blacklistRE: /\.native\.js$/,
-        sourceExts: ['js', 'jsx', 'ts', 'tsx', 'json', 'mjs'],
+        sourceExts: ['js', 'jsx', 'ts', 'tsx', 'json', 'mjs', 'mdx'],
       },
     },
     {
@@ -173,7 +173,7 @@ export function buildFolder(): Promise<string> {
   // eslint-disable-next-line no-console
   console.log('Creating build directory');
   return new Promise<string>((resolve, reject) => {
-    tmp.dir({prefix: 'flipper-build-'}, (err, buildFolder) => {
+    tmp.dir({prefix: 'sonar-build-'}, (err, buildFolder) => {
       if (err) {
         reject(err);
       } else {

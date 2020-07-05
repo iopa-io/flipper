@@ -218,7 +218,7 @@ class PluginDebugger extends Component<Props> {
   render() {
     let content = null;
 
-    if (!this.props.selectedDevice) {
+    if (!this.props.selectedDevice && this.props.selectedDevice !== '') {
       content = (
         <InfoText>
           We can't find any device connected to your computer. Is an

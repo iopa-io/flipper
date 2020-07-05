@@ -1,0 +1,3 @@
+provider: generic
+url: 'https://files.karla.ai/releases/sync-sonar/mac/'
+updaterCacheDirName: sync-sonar-updater

@@ -149,8 +149,8 @@ export type Action =
     }
   | RegisterPluginAction;
 
-const DEFAULT_PLUGIN = 'DeviceLogs';
-const DEFAULT_DEVICE_BLACKLIST = [MacDevice];
+const DEFAULT_PLUGIN = 'flipper-plugin-sonar-desktop-discovery';
+const DEFAULT_DEVICE_BLACKLIST: string[] = [];
 const INITAL_STATE: State = {
   devices: [],
   androidEmulators: [],

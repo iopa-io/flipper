@@ -21,6 +21,24 @@ const pluginsReferencedDirectlyFromFlipper = [
   path.join(pluginsDir, 'fb', 'layout', 'sidebar_extensions'),
   path.join(pluginsDir, 'fb', 'mobileconfig'),
   path.join(pluginsDir, 'fb', 'watch'),
+  path.resolve(
+    appDir,
+    '..',
+    '..',
+    '..',
+    'flipper-sonar',
+    'packages',
+    'flipper-ssdp',
+  ),
+  path.resolve(
+    appDir,
+    '..',
+    '..',
+    '..',
+    'flipper-sonar',
+    'packages',
+    'flipper-sonar-components',
+  ),
 ];
 
 export default async function getAppWatchFolders() {

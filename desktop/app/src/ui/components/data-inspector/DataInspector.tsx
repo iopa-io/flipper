@@ -258,8 +258,8 @@ const diffMetadataExtractor: DiffMetadataExtractor = (
     // the value from the diff prop
     // The property name still exists, but the values may be different.
     return [
-      {data: val, status: 'added'},
       {data: diffVal, status: 'removed'},
+      {data: val, status: 'added'},
     ];
   }
 
@@ -511,7 +511,8 @@ export default class DataInspector extends Component<DataInspectorProps> {
         backgroundColor: colors.tealTint70,
       });
       const Removed = styled.div({
-        backgroundColor: colors.cherryTint70,
+     //   backgroundColor: colors.cherryTint70,
+        textDecoration: 'line-through',
       });
 
       for (const key of keys) {

@@ -10,7 +10,7 @@
 import path from 'path';
 import fs from 'fs-extra';
 import expandTilde from 'expand-tilde';
-import {homedir} from 'os';
+import { homedir } from 'os';
 
 export default async function getPluginFolders(
   includeThirdparty: boolean = false,
@@ -32,7 +32,10 @@ export default async function getPluginFolders(
       pluginFolders.push(...config.pluginPaths);
     }
   }
-  pluginFolders.push(path.resolve(__dirname, '..', 'plugins'));
-  pluginFolders.push(path.resolve(__dirname, '..', 'plugins', 'fb'));
+  const rootdir = path.resolve(__dirname, '..', '..', '..');
+  // pluginFolders.push(path.resolve(__dirname, '..', 'plugins'));
+  // pluginFolders.push(path.resolve(__dirname, '..', 'plugins', 'fb'));
+  pluginFolders.push(path.resolve(rootdir, 'flipper-sonar', 'plugins'));
+  pluginFolders.push(path.resolve(rootdir, 'flipper-sonar-sync', 'plugins'));
   return pluginFolders.map(expandTilde).filter(fs.existsSync);
 }
