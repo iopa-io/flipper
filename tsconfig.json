@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "lib": ["ES2019"],
+    "esModuleInterop": true,
+    "target": "ES2019",
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "strict": true,
+    "useUnknownInCatchVariables": false,
+    "composite": true,
+    "incremental": true,
+    "baseUrl": ".",
+    "allowJs": true,
+    "rootDir": ".",
+    // by default we don't include any @types, as to white list them specifically per project.
+    // this avoids hoised @types packages being shared by all projects implicitly
+    "types": []
+  },
+  "exclude": ["**/lib/", "**/dist/", "**/node_modules/", "**/__tests__/"]
+}

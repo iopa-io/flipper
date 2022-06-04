@@ -1,0 +1,17 @@
+{
+  "name": "flipper-iopa-plugins",
+  "private": true,
+  "title": "Flipper Public Plugins",
+  "workspaces": {
+    "packages": [
+      "*"
+    ],
+    "nohoist": [
+      "flipper-plugin-kaios-big-allocations/**"
+    ]
+  },
+  "bugs": {
+    "email": "oncall+flipper@xmail.facebook.com",
+    "url": "https://fb.workplace.com/groups/flippersupport/"
+  }
+}

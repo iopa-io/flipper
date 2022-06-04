@@ -1,0 +1,8 @@
+dist/
+.flipper-desktop/
+node_modules/
+*.tsbuildinfo
+/coverage
+.env
+tsc-error.log
+yarn.lock

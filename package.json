@@ -1,0 +1,38 @@
+{
+  "name": "@iopa/flipper-mono-repository",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Iopa development tool",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf ./flipper-desktop && rm -rf node_modules",
+    "download": "./ts-node scripts/download.ts $@",
+    "build": "cd ./.flipper-desktop && yarn build:flipper-server && cd ..",
+    "dev": "./ts-node scripts/dev.ts $@"
+  },
+  "dependencies": {
+    "degit": "^2.8.4",
+    "fs-extra": "^10.1.0",
+    "tiny-glob": "^0.2.9",
+    "uuid": "^8.3.2",
+    "fb-watchman": "2.0.1"
+  },
+  "devDependencies": {
+    "js-base64": "^3.7.2",
+    "antd": "4.20.6",
+    "@types/react": "^17",
+    "@types/fb-watchman": "^2.0.1",
+    "@types/uuid": "8.3.4",
+    "@types/node": "^17.0.36",
+    "@types/degit": "2.8.3",
+    "@types/fs-extra": "^9.0.13",
+    "cross-env": "^7.0.3",
+    "promisify-child-process": "4.1.1",
+    "flipper-plugin": "^0.147.0",
+    "ts-node": "^10.8.0",
+    "typescript": "^4.7.2",
+    "xml-beautifier": "^0.5.0",
+    "fast-json-patch": "^3.1.1"
+  }
+}
