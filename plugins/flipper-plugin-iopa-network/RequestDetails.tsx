@@ -246,18 +246,18 @@ function expandTrace(data: TraceRecord) {
     trace.endJson = JSON.parse(JSON.stringify(trace.resumeJson))
     applyPatch(trace.endJson, trace.endDelta || [])
 
-    trace.startJsonDiffsForNext = diffsOnly(trace.startJson, trace.nextDelta)
+    trace.startJsonDiffsForNext = diffsOnly(trace.startJson, trace.nextDelta || [])
     trace.nextJsonDiffs = JSON.parse(JSON.stringify(trace.startJsonDiffsForNext))
     applyPatch(trace.nextJsonDiffs, trace.nextDelta || [])
 
-    trace.startJsonDiffsForEnd = diffsOnly(trace.resumeJson, trace.endDelta)
+    trace.startJsonDiffsForEnd = diffsOnly(trace.resumeJson, trace.endDelta || [])
     trace.endJsonDiffs = JSON.parse(JSON.stringify(trace.startJsonDiffsForEnd))
     applyPatch(trace.endJsonDiffs, trace.endDelta || [])
   } else {
     trace.endJson = JSON.parse(JSON.stringify(data.startJson))
     applyPatch(trace.endJson, trace.endDelta || [])
 
-    trace.startJsonDiffsForEnd = diffsOnly(trace.startJson, trace.endDelta)
+    trace.startJsonDiffsForEnd = diffsOnly(trace.startJson, trace.endDelta || [])
     trace.endJsonDiffs = JSON.parse(JSON.stringify(trace.startJsonDiffsForEnd))
     applyPatch(trace.endJsonDiffs, trace.endDelta || [])
   }
