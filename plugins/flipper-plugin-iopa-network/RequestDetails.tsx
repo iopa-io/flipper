@@ -139,7 +139,7 @@ export default class RequestDetails extends Component<RequestDetailsProps> {
             <MiddlewareInspector trace={context.get('server.Trace')} />
           </Panel>
         ) : null}
-        {context.response.get('iopa.StatusCode') ? (
+        {context.response?.get('iopa.StatusCode') ? (
           <>
             {Array.from(context.response.get('iopa.Headers')?.keys())?.length ? (
               <Panel
@@ -238,28 +238,28 @@ function expandTrace(data: TraceRecord) {
   const trace = JSON.parse(JSON.stringify(data)) as TraceRecordExpanded
   if (trace.next) {
     trace.nextJson = JSON.parse(JSON.stringify(data.startJson))
-    applyPatch(trace.nextJson, trace.nextDelta)
+    applyPatch(trace.nextJson, trace.nextDelta || [])
 
     trace.resumeJson = JSON.parse(JSON.stringify(trace.nextJson))
-    applyPatch(trace.resumeJson, trace.resumeDelta)
+    applyPatch(trace.resumeJson, trace.resumeDelta || [])
 
     trace.endJson = JSON.parse(JSON.stringify(trace.resumeJson))
-    applyPatch(trace.endJson, trace.endDelta)
+    applyPatch(trace.endJson, trace.endDelta || [])
 
     trace.startJsonDiffsForNext = diffsOnly(trace.startJson, trace.nextDelta)
     trace.nextJsonDiffs = JSON.parse(JSON.stringify(trace.startJsonDiffsForNext))
-    applyPatch(trace.nextJsonDiffs, trace.nextDelta)
+    applyPatch(trace.nextJsonDiffs, trace.nextDelta || [])
 
     trace.startJsonDiffsForEnd = diffsOnly(trace.resumeJson, trace.endDelta)
     trace.endJsonDiffs = JSON.parse(JSON.stringify(trace.startJsonDiffsForEnd))
-    applyPatch(trace.endJsonDiffs, trace.endDelta)
+    applyPatch(trace.endJsonDiffs, trace.endDelta || [])
   } else {
     trace.endJson = JSON.parse(JSON.stringify(data.startJson))
-    applyPatch(trace.endJson, trace.endDelta)
+    applyPatch(trace.endJson, trace.endDelta || [])
 
     trace.startJsonDiffsForEnd = diffsOnly(trace.startJson, trace.endDelta)
     trace.endJsonDiffs = JSON.parse(JSON.stringify(trace.startJsonDiffsForEnd))
-    applyPatch(trace.endJsonDiffs, trace.endDelta)
+    applyPatch(trace.endJsonDiffs, trace.endDelta || [])
   }
   return trace
 }
@@ -345,7 +345,7 @@ class ResponseBodyInspector extends Component<{
 }> {
   render() {
     const {context, formattedText} = this.props;
-    if (context.response.get('iopa.Body') == null || context.response.get('iopa.Body') === '') {
+    if (context.response?.get('iopa.Body') == null || context.response?.get('iopa.Body') === '') {
       return <Empty />;
     }
     const bodyFormatters = formattedText ? TextBodyFormatters : BodyFormatters;
